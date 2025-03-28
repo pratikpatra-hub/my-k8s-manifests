@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: "https://github.com/pratikpatra555/my-k8s-manifests.git"  # Change this!
+    targetRevision: main
+    path: .  # Points to the repo root
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true  # Deletes removed resources
+      selfHeal: true  # Fixes drift automatically
+    syncOptions:
+      - CreateNamespace=true  # Creates the namespace if it doesn't exist
